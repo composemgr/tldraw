@@ -21,8 +21,8 @@ services:
       PUID: ${SERVICE_USER:-1000}
       PGID: ${SERVICE_GROUP:-1000}
     volumes:
-      - ./rootfs/config/tldraw:/config
-      - ./rootfs/data/tldraw:/data
+      - ./volumes/config/tldraw:/config
+      - ./volumes/data/tldraw:/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000"]
       interval: 30s
