@@ -1,5 +1,6 @@
 # nginx proxy address - http://172.17.0.1:3004
 
+name: tldraw
 x-logging: &default-logging
   driver: json-file
   options:
@@ -8,27 +9,27 @@ x-logging: &default-logging
 
 services:
   tldraw:
-    image: tldraw/tldraw:latest
+    image: foxxmd/tldraw:latest
+    pull_policy: always
     container_name: tldraw-app
-    restart: unless-stopped
+    hostname: ${BASE_HOST_NAME:-$HOSTNAME}
+    restart: always
     logging: *default-logging
     networks:
       - tldraw
     ports:
-      - "3004:3000"
+      - "172.17.0.1:3004:5858"
     environment:
       TZ: ${TZ:-America/New_York}
-      PUID: ${SERVICE_USER:-1000}
-      PGID: ${SERVICE_GROUP:-1000}
     volumes:
-      - ./volumes/config/tldraw:/config
       - ./volumes/data/tldraw:/data
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5858"]
       interval: 30s
       timeout: 10s
       retries: 3
 
 networks:
   tldraw:
+    name: tldraw
     external: false
