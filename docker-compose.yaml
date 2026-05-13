@@ -26,7 +26,8 @@ services:
       CONTAINER_NAME: tldraw-app
       HOSTNAME: ${BASE_HOST_NAME:-$HOSTNAME}
     volumes:
-      - ./volumes/data/tldraw:/data
+      - ./volumes/data/tldraw/assets:/config/assets
+      - ./volumes/data/tldraw/rooms:/config/rooms
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://localhost:5858"]
       interval: 30s
